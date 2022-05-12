@@ -469,10 +469,10 @@ func parseNameServer(servers []string) ([]dns.NameServer, error) {
 
 	for idx, server := range servers {
 		// parse with specific interface
-		// .e.g 10.0.0.1@vpn
+		// .e.g 10.0.0.1#vpn
 		interfaceName := ""
-		if strings.Contains(server, "@") {
-			s := strings.Split(server, "@")
+		if strings.Contains(server, "#") {
+			s := strings.Split(server, "#")
 			server, interfaceName = s[0], s[1]
 		}
 

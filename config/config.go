@@ -468,14 +468,6 @@ func parseNameServer(servers []string) ([]dns.NameServer, error) {
 	nameservers := []dns.NameServer{}
 
 	for idx, server := range servers {
-		// parse with specific interface
-		// .e.g 10.0.0.1#vpn
-		interfaceName := ""
-		if strings.Contains(server, "#") {
-			s := strings.Split(server, "#")
-			server, interfaceName = s[0], s[1]
-		}
-
 		// parse without scheme .e.g 8.8.8.8:53
 		if !strings.Contains(server, "://") {
 			server = "udp://" + server
@@ -484,6 +476,10 @@ func parseNameServer(servers []string) ([]dns.NameServer, error) {
 		if err != nil {
 			return nil, fmt.Errorf("DNS NameServer[%d] format error: %s", idx, err.Error())
 		}
+
+		// parse with specific interface
+		// .e.g 10.0.0.1#en0
+		interfaceName := u.Fragment
 
 		var addr, dnsNetType string
 		switch u.Scheme {
